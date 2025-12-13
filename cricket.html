@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>U-14 Cricket Slot Registration</title>
+
+  <style>
+    body{
+      font-family:Arial,system-ui;
+      background:#f3f6f9;
+      margin:0;
+      padding:20px;
+    }
+    .container{
+      max-width:900px;
+      margin:auto;
+    }
+    .card{
+      background:#fff;
+      padding:18px;
+      border-radius:10px;
+      margin-bottom:20px;
+    }
+    .row{display:flex;gap:12px}
+    .col{flex:1}
+    input,select{
+      width:100%;
+      padding:10px;
+      border:1px solid #ccc;
+      border-radius:6px;
+      margin-top:4px;
+    }
+    button{
+      padding:10px 16px;
+      background:#0f7cfa;
+      color:#fff;
+      border:none;
+      border-radius:6px;
+      cursor:pointer;
+      margin-top:14px;
+    }
+    #ticketCard{display:none}
+    .ticket{
+      border:2px dashed #0f7cfa;
+      padding:16px;
+      border-radius:10px;
+      display:flex;
+      gap:20px;
+      align-items:center;
+    }
+    #qrcode img{
+      border:1px solid #ccc;
+      padding:4px;
+      background:#fff;
+    }
+  </style>
+</head>
+
+<body>
+<div class="container">
+
+  <h2>U-14 Cricket Slot Registration</h2>
+
+  <!-- FORM -->
+  <div class="card">
+    <form id="regForm">
+      <div class="row">
+        <div class="col">
+          <label>Player Name</label>
+          <input id="playerName" required>
+        </div>
+        <div class="col">
+          <label>Age</label>
+          <input id="age" type="number" min="6" max="13" required>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:10px">
+        <div class="col">
+          <label>Guardian Name</label>
+          <input id="guardian" required>
+        </div>
+        <div class="col">
+          <label>Phone</label>
+          <input id="phone" required>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:10px">
+        <div class="col">
+          <label>Day</label>
+          <select id="day">
+            <option>Day 1</option>
+            <option>Day 2</option>
+            <option>Day 3</option>
+          </select>
+        </div>
+        <div class="col">
+          <label>Slot</label>
+          <select id="slot">
+            <option>8–9 AM</option>
+            <option>9–10 AM</option>
+            <option>10–11 AM</option>
+            <option>11–12 PM</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="submit">Book Slot</button>
+    </form>
+  </div>
+
+  <!-- TICKET -->
+  <div class="card" id="ticketCard">
+    <h3>Your Ticket</h3>
+    <div class="ticket">
+      <div id="ticketDetails"></div>
+      <div id="qrcode"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+document.getElementById('regForm').addEventListener('submit', function(e){
+  e.preventDefault();
+
+  const ticket = {
+    ticketId: 'TKT-' + Date.now(),
+    player: playerName.value,
+    age: age.value,
+    guardian: guardian.value,
+    phone: phone.value,
+    day: day.value,
+    slot: slot.value
+  };
+
+  document.getElementById('ticketCard').style.display = 'block';
+
+  document.getElementById('ticketDetails').innerHTML = `
+    <p><strong>Ticket ID:</strong> ${ticket.ticketId}</p>
+    <p><strong>Player:</strong> ${ticket.player}</p>
+    <p><strong>Age:</strong> ${ticket.age}</p>
+    <p><strong>Guardian:</strong> ${ticket.guardian}</p>
+    <p><strong>Phone:</strong> ${ticket.phone}</p>
+    <p><strong>Day:</strong> ${ticket.day}</p>
+    <p><strong>Slot:</strong> ${ticket.slot}</p>
+  `;
+
+  // QR contains URL to ticket.html with data
+  const params = new URLSearchParams(ticket).toString();
+  const qrURL =
+    `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://example.com/ticket.html?${params}`;
+
+  document.getElementById('qrcode').innerHTML =
+    `<img src="${qrURL}" alt="QR Code">`;
+
+  this.reset();
+});
+</script>
+
+</body>
+</html>

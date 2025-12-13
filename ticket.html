@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>U-14 Cricket Ticket</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body{
+      font-family:Arial,system-ui;
+      background:#f3f6f9;
+      margin:0;
+      padding:20px;
+    }
+    .ticket{
+      max-width:500px;
+      margin:auto;
+      background:#fff;
+      padding:20px;
+      border-radius:10px;
+      border:2px dashed #0f7cfa;
+    }
+    h2{text-align:center;margin-top:0}
+    p{font-size:15px}
+  </style>
+</head>
+
+<body>
+
+<div class="ticket">
+  <h2>U-14 Cricket Selection Ticket</h2>
+  <div id="details"></div>
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+
+if (!params.has('ticketId')) {
+  document.getElementById('details').innerHTML =
+    '<p>❌ Invalid Ticket</p>';
+} else {
+  document.getElementById('details').innerHTML = `
+    <p><strong>Ticket ID:</strong> ${params.get('ticketId')}</p>
+    <p><strong>Player:</strong> ${params.get('player')}</p>
+    <p><strong>Age:</strong> ${params.get('age')}</p>
+    <p><strong>Guardian:</strong> ${params.get('guardian')}</p>
+    <p><strong>Phone:</strong> ${params.get('phone')}</p>
+    <p><strong>Day:</strong> ${params.get('day')}</p>
+    <p><strong>Slot:</strong> ${params.get('slot')}</p>
+  `;
+}
+</script>
+
+</body>
+</html>
