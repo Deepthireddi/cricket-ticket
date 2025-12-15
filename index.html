@@ -150,8 +150,9 @@ document.getElementById('regForm').addEventListener('submit', function(e){
 
   // QR contains URL to ticket.html with data
   const params = new URLSearchParams(ticket).toString();
-  const qrURL =
-    `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://example.com/ticket.html?${params}`;
+const qrURL =
+  `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://deepthireddi.github.io/cricket-ticket/ticket.html?${params}`;
+
 
   document.getElementById('qrcode').innerHTML =
     `<img src="${qrURL}" alt="QR Code">`;
@@ -162,3 +163,4 @@ document.getElementById('regForm').addEventListener('submit', function(e){
 
 </body>
 </html>
+
