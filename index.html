@@ -7,7 +7,7 @@
 
   <style>
     body{
-      font-family:Arial,system-ui;
+      font-family: Arial, system-ui;
       background:#f3f6f9;
       margin:0;
       padding:20px;
@@ -22,8 +22,12 @@
       border-radius:10px;
       margin-bottom:20px;
     }
-    .row{display:flex;gap:12px}
-    .col{flex:1}
+    .row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:40px;
+      margin-top:10px;
+    }
     input,select{
       width:100%;
       padding:10px;
@@ -48,6 +52,7 @@
       display:flex;
       gap:20px;
       align-items:center;
+      margin-top:10px;
     }
     #qrcode img{
       border:1px solid #ccc;
@@ -65,30 +70,31 @@
   <!-- FORM -->
   <div class="card">
     <form id="regForm">
+
       <div class="row">
-        <div class="col">
+        <div>
           <label>Player Name</label>
           <input id="playerName" required>
         </div>
-        <div class="col">
+        <div>
           <label>Age</label>
           <input id="age" type="number" min="6" max="13" required>
         </div>
       </div>
 
-      <div class="row" style="margin-top:10px">
-        <div class="col">
+      <div class="row">
+        <div>
           <label>Guardian Name</label>
           <input id="guardian" required>
         </div>
-        <div class="col">
+        <div>
           <label>Phone</label>
           <input id="phone" required>
         </div>
       </div>
 
-      <div class="row" style="margin-top:10px">
-        <div class="col">
+      <div class="row">
+        <div>
           <label>Day</label>
           <select id="day">
             <option>Day 1</option>
@@ -96,13 +102,17 @@
             <option>Day 3</option>
           </select>
         </div>
-        <div class="col">
+        <div>
           <label>Slot</label>
           <select id="slot">
             <option>8–9 AM</option>
             <option>9–10 AM</option>
             <option>10–11 AM</option>
             <option>11–12 PM</option>
+            <option>1–2 PM</option>
+            <option>2–3 PM</option>
+            <option>3–4 PM</option>
+            <option>4–5 PM</option>
           </select>
         </div>
       </div>
@@ -111,7 +121,7 @@
     </form>
   </div>
 
-  <!-- TICKET -->
+  <!-- TICKET PREVIEW -->
   <div class="card" id="ticketCard">
     <h3>Your Ticket</h3>
     <div class="ticket">
@@ -127,12 +137,12 @@ document.getElementById('regForm').addEventListener('submit', function(e){
   e.preventDefault();
 
   const ticketId = 'TKT-' + Date.now();
-  const player   = playerName.value;
-  const ageVal   = age.value;
+  const player = playerName.value;
+  const ageVal = age.value;
   const guardianVal = guardian.value;
   const phoneVal = phone.value;
-  const dayVal   = day.value;
-  const slotVal  = slot.value;
+  const dayVal = day.value;
+  const slotVal = slot.value;
 
   document.getElementById('ticketCard').style.display = 'block';
 
@@ -146,19 +156,19 @@ document.getElementById('regForm').addEventListener('submit', function(e){
     <p><strong>Slot:</strong> ${slotVal}</p>
   `;
 
-  /* 🔒 FORCE ALL PARAMS INTO URL (NO OBJECT MAGIC) */
-  const params =
-    `ticketId=${encodeURIComponent(ticketId)}` +
-    `&player=${encodeURIComponent(player)}` +
-    `&age=${encodeURIComponent(ageVal)}` +
-    `&guardian=${encodeURIComponent(guardianVal)}` +
-    `&phone=${encodeURIComponent(phoneVal)}` +
-    `&day=${encodeURIComponent(dayVal)}` +
-    `&slot=${encodeURIComponent(slotVal)}`;
+  /* ✅ CORRECT QR GENERATION (ENCODE FULL URL) */
+const ticketURL =
+  `https://deepthireddi.github.io/cricket-ticket/ticket.html` +
+  `?ticketId=${ticketId}` +
+  `&player=${player}` +
+  `&age=${ageVal}` +
+  `&guardian=${guardianVal}` +
+  `&phone=${phoneVal}` +
+  `&day=${dayVal}` +
+  `&slot=${slotVal}`;
 
-  const qrURL =
-    `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=` +
-    `https://deepthireddi.github.io/cricket-ticket/ticket.html?${params}`;
+const qrURL =
+  `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(ticketURL)}`;
 
   document.getElementById('qrcode').innerHTML =
     `<img src="${qrURL}" alt="QR Code">`;
