@@ -126,33 +126,39 @@
 document.getElementById('regForm').addEventListener('submit', function(e){
   e.preventDefault();
 
-  const ticket = {
-    ticketId: 'TKT-' + Date.now(),
-    player: playerName.value,
-    age: age.value,
-    guardian: guardian.value,
-    phone: phone.value,
-    day: day.value,
-    slot: slot.value
-  };
+  const ticketId = 'TKT-' + Date.now();
+  const player   = playerName.value;
+  const ageVal   = age.value;
+  const guardianVal = guardian.value;
+  const phoneVal = phone.value;
+  const dayVal   = day.value;
+  const slotVal  = slot.value;
 
   document.getElementById('ticketCard').style.display = 'block';
 
   document.getElementById('ticketDetails').innerHTML = `
-    <p><strong>Ticket ID:</strong> ${ticket.ticketId}</p>
-    <p><strong>Player:</strong> ${ticket.player}</p>
-    <p><strong>Age:</strong> ${ticket.age}</p>
-    <p><strong>Guardian:</strong> ${ticket.guardian}</p>
-    <p><strong>Phone:</strong> ${ticket.phone}</p>
-    <p><strong>Day:</strong> ${ticket.day}</p>
-    <p><strong>Slot:</strong> ${ticket.slot}</p>
+    <p><strong>Ticket ID:</strong> ${ticketId}</p>
+    <p><strong>Player:</strong> ${player}</p>
+    <p><strong>Age:</strong> ${ageVal}</p>
+    <p><strong>Guardian:</strong> ${guardianVal}</p>
+    <p><strong>Phone:</strong> ${phoneVal}</p>
+    <p><strong>Day:</strong> ${dayVal}</p>
+    <p><strong>Slot:</strong> ${slotVal}</p>
   `;
 
-  // QR contains URL to ticket.html with data
-  const params = new URLSearchParams(ticket).toString();
-const qrURL =
-  `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://deepthireddi.github.io/cricket-ticket/ticket.html?${params}`;
+  /* 🔒 FORCE ALL PARAMS INTO URL (NO OBJECT MAGIC) */
+  const params =
+    `ticketId=${encodeURIComponent(ticketId)}` +
+    `&player=${encodeURIComponent(player)}` +
+    `&age=${encodeURIComponent(ageVal)}` +
+    `&guardian=${encodeURIComponent(guardianVal)}` +
+    `&phone=${encodeURIComponent(phoneVal)}` +
+    `&day=${encodeURIComponent(dayVal)}` +
+    `&slot=${encodeURIComponent(slotVal)}`;
 
+  const qrURL =
+    `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=` +
+    `https://deepthireddi.github.io/cricket-ticket/ticket.html?${params}`;
 
   document.getElementById('qrcode').innerHTML =
     `<img src="${qrURL}" alt="QR Code">`;
@@ -163,4 +169,3 @@ const qrURL =
 
 </body>
 </html>
-
