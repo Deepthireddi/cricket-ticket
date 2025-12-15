@@ -39,26 +39,19 @@
 </div>
 
 <script>
-  const params = new URLSearchParams(window.location.search);
+const params = new URLSearchParams(window.location.search);
 
-  // ✅ SAFELY READ TICKET ID (handles all cases)
-  const ticketId =
-    params.get('ticketId') || params.get('id');
+const ticketId = params.get('ticketId');
 
-  if (!ticketId) {
-    document.getElementById('details').innerHTML =
-      '<p>❌ Invalid Ticket</p>';
-  } else {
-    document.getElementById('details').innerHTML = `
-      <p><strong>Ticket ID:</strong> ${ticketId}</p>
-      <p><strong>Player:</strong> ${params.get('player') || '-'}</p>
-      <p><strong>Age:</strong> ${params.get('age') || '-'}</p>
-      <p><strong>Guardian:</strong> ${params.get('guardian') || '-'}</p>
-      <p><strong>Phone:</strong> ${params.get('phone') || '-'}</p>
-      <p><strong>Day:</strong> ${params.get('day') || '-'}</p>
-      <p><strong>Slot:</strong> ${params.get('slot') || '-'}</p>
-    `;
-  }
+document.getElementById('details').innerHTML = `
+  <p><strong>Ticket ID:</strong> ${ticketId || '-'}</p>
+  <p><strong>Player:</strong> ${params.get('player') || '-'}</p>
+  <p><strong>Age:</strong> ${params.get('age') || '-'}</p>
+  <p><strong>Guardian:</strong> ${params.get('guardian') || '-'}</p>
+  <p><strong>Phone:</strong> ${params.get('phone') || '-'}</p>
+  <p><strong>Day:</strong> ${params.get('day') || '-'}</p>
+  <p><strong>Slot:</strong> ${params.get('slot') || '-'}</p>
+`;
 </script>
 
 </body>
